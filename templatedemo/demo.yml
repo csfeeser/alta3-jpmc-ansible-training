@@ -1,0 +1,22 @@
+- name: how to show finished templates in debug!
+  hosts: localhost
+
+  vars:
+    personname: Chad
+    flavor: coffee
+
+  tasks:
+
+    - name: new module called set_fact
+      set_fact:
+        # parameter is the name of the variable you want to make!
+        dat_finished_template_tho: "{{ lookup('template', 'demo.j2') }}"
+
+    - name: this will print out the rendered template saved to the variable above
+      debug:
+        var: dat_finished_template_tho
+
+    - name: this will save the rendered template to a file!
+      copy:
+        content: "{{ dat_finished_template_tho }}"
+        dest: finished.txt
