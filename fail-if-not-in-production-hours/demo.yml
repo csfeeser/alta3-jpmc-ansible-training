@@ -1,0 +1,15 @@
+- name: Ensure playbook is not run during production hours
+  hosts: planetexpress
+  gather_facts: yes
+
+  # this might be a use-case for pre tasks, but that's up to you!
+  pre_tasks:
+    - name: Check if current time is outside of production hours (9am - 5pm UTC)
+      fail:
+        msg: "This playbook cannot be run before/after production hours (9am-5pm UTC)."
+      when: ansible_date_time.hour | int < 9 or ansible_date_time.hour | int >= 21
+
+  tasks:
+    - name: pretend this is a useful task
+      debug:
+        msg: "This task can only run during production hours (9am-5pm UTC)"
